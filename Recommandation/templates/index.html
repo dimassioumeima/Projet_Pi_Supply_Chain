@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommandation Produits</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recommandation de Produits</h1>
+
+    <form method="POST">
+        <label for="shop_id">Sélectionnez un Shop :</label>
+        <select id="shop_id" name="shop_id" required>
+            <option value="" disabled selected>-- Choisissez un Shop --</option>
+            {% for shop in shop_ids %}
+                <option value="{{ shop }}" {% if shop == selected_shop_id %}selected{% endif %}>Shop {{ shop }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Voir les produits</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if products %}
+        <h2 style="text-align: center;">Top Produits pour le Shop {{ shop_id }}</h2>
+        <table>
+            <tr>
+                <th>ID du Produit</th>
+                <th>Nom du Produit</th>
+                <th>Catégorie</th>
+
+                <th>Quantité Vendue</th>
+                <th>Ventes Totales</th>
+            </tr>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product['Product_Fk'] }}</td>
+                    <td>{{ product['Product_Name'] }}</td>
+                    <td>{{ product['Category'] }}</td>
+
+                    <td>{{ product['Product_Quantity_Sold'] }}</td>
+                    <td>{{ product['Total_General'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
